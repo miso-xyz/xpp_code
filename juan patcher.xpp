@@ -1,0 +1,103 @@
+%include Win32;
+%include ch.ProcPlus;
+%include ch.Interpreter;
+
+;; Troll patcher for Reset VBA Password 5.15.4.26
+;; Author: misonothx
+;; IDE: Vyper IDE 12.0
+
+;; State: Unfinished
+
+;; 1st method was to attempt a middle-man call retriever & tamper with exported data from ewsWrap
+;; 2nd method was to slightly patch the orifinal application to retrieve all license key calls sent to ewsWrap
+
+;; 1st method works however can lead to memory leaks and crashes after a few calls
+;; 2nd method takes forever to setup & is slow af
+
+config {
+	' PACK_STYLE = MINIMAL
+	' PACK_ENVIRONMENT = 1
+	' PACK_REFERENCES = 1
+	' RESOURCE_STACK = NULL
+}
+
+;;stack(reso) { file::"ewsWrap.dll" } ;; Resources
+
+Process SNCheck = ProcPlus::Load($RES + "ewsWrap.dll");
+Process HookTarg;
+
+void global::main()
+{
+	%if (Win32::Registry::GetKey("HKCU\Software\PX_Reset_VBA_Password\", "SN") <> "4TYE-M851-JRLG-V3QP-BJD0")
+	{
+		Win32::Registry::SetKey("HKCU\Software\PX_Reset_VBA_Password\","SN","4TYE-M851-JRLG-V3QP-BJD0");
+	};
+	
+	%if (Win32::File::Exists("ResetVBAPassword.exe"))
+	{
+		%if (Security::Cryptography::HashAlgorithms::SHA256::FromStream(new MemorySteam(Win32::File::GetBytes("ResetVBAPassword.exe"))) = "32f62f1ec6553280d50c8579b9d08858300e50d4683c391d9a0923d6b26305be")
+		{
+			%if (Security::Cryptography::HashAlgorithms::SHA256::FromStream(new MemorySteam(Win32::File::GetBytes("ewsWrap.dll"))) = "06f45e149019c5109d265eb5aa5eb15058ae05eff8af161bd1dfdc1586e8835c")
+			{
+				HookTarg::Start("ResetVBAPassword.exe", 0x00);
+			}
+			%elif
+			{
+				Win32::Dialogs::Msgbox("Invalid hash (ewsWrap.dll), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01)
+				jmp $0xff;
+			};
+		}
+		%elif
+		{
+			Win32::Dialogs::Msgbox("Invalid hash (ResetVBAPassword.exe), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01)
+			jmp $0xff;
+		};
+	}
+	%elif
+	{
+		Win32::Dialogs::Msgbox("ResetVBAPassword.exe is missing, please reinstall the application & the crack", "Juan Patcher", 0x0f, 0x01)
+		jmp $0xff;
+	};
+	
+	ProcessModule ewsWrap = HookTarg::Modules::GetModule("ewsWrap", 1, new SHA256Hash("06f45e149019c5109d265eb5aa5eb15058ae05eff8af161bd1dfdc1586e8835c"));
+	AssemblyDLL ewsWrap_ = Assembly.FromMemory(ewsWrap::Memory);
+	%foreach (new stack[ewsWrap_::exportedData] exportedData => HookTarg)
+	{
+		exportedData patchData = ExportPatch(exportedData[$0x00]])
+		%if (exportedData[$0x00] = exportedData[$(+/-)stack::Size]),stack(ewsWrap_::exportedData)::"expDSimRange"
+		{
+			%for (x=0, x++[0x01], expDSimRange::Size)
+			{
+				expDSimRange[$0x00+x]::RawData = patchData;
+				push expDSimRange[$0x00+x];
+			};
+			;;%if exportedData[$0x00]:: %error equ { $0x00++; };
+		};
+	};
+};
+
+function StringCalls(string data) equ string
+{
+	%if (data(0=>19) = "__XPP[JUANPATCHER::]")
+	{
+		%select (data(19=>data::Size-1))sam
+		{
+			case "string(%sn)" { Win32::IO::File::ReadLine("text.msg", 0); };
+			case "string(%ver)" { Win32::IO::File::ReadLine("text.msg", 1); };
+			case "string(%homepage)" { Win32::IO::File::ReadLine("text.msg", 2); };
+		};
+	};
+};
+
+function ExportPatch(exportedData exportedDataToPatch) equ exportedData
+{
+	%select (exportedDataToPatch::ParentExportFunction::Name)
+	{
+		case "eSellerate_ValidateSerialNumberCS", "eWeb_ConfirmSerialNumberCS", "eWeb_ManualActivateSerialNumberCS", "eWeb_ValidateActivationCS"
+		{
+			exportedDataToPatch::RawData = 0x01, 0x00, 0x00, 0x0e, 0xff;
+			push exportedDataToPatch::RawData;
+			ret;
+		};
+	};
+}
