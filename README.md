@@ -14,7 +14,7 @@ will upload here from time to time
 # Getting X++ Runtime Handler
 if you don't have it for some reason you can just use the following commands
 <pre>
-;; its a low-level package, you'll need to allow UAC & DRM
+;; its a low-level package, you'll need to allow UAC & DRM, you can also use the GUI to download the package directly from the page
 
 > chara(instance) uac allow 
 > chara(instance) drm allow pkg-install
