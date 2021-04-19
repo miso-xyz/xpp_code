@@ -5,7 +5,7 @@ will upload here from time to time
 
 # Requirements
 - Vyper IDE 8.0 (Minimum) (use `vyper --v` to get your current version, to update do `vyper --up "ide, rt" %version%`
-- Chara
+- Chara (dm me to request a client)
 - Chara.XPPRuntimeHandler
 
 # Building
