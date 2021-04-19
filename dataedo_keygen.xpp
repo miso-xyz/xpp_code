@@ -1,0 +1,143 @@
+%include Win32;
+%include ch.Math;
+%include ch.Crypto;
+%include ch.Interpreter;
+%include ch.dotNet.Interpreter;
+
+;; Dataedo Keygen (3.X.X - 9.X.X), now has been ported to .NET
+;; Author: misonothx
+;; IDE: Vyper IDE 12.0
+
+;; State: Working (port of the original .NET keygen available on sinister.ly)
+
+config {
+	' PACK_STYLE = MINIMAL
+	' PACK_ENVIRONMENT = 1
+	' PACK_REFERENCES = 1
+	' RESOURCE_STACK = reso
+}
+
+stack(reso) {
+		string privateKey::"MIIBuTCCASKgAwIBAgIQfAmeN9ud3aJJDZYsiDoCAzANBgkqhkiG9w0BAQUFADAbMRkwFwYDVQQDExBUZXN0IENlcnRpZmljYXRlMB4XDTE0MDQxNTEwMDYzN1oXDTE1MTIzMTAwMDAwMFowGzEZMBcGA1UEAxMQVGVzdCBDZXJ0aWZpY2F0ZTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAsf5509yFLmHETDkDmzDeK6qGejHDxJresVWyLNAFqassyRJ2c/PY65yDh4Cs+cPxHb9mgA1OFciTnBPtW5CWhSCkBDzFcTqzv4/0pSRtkllSKvLHacCuTkax+nfGlbxTGwwCLyP5qUWn9CAY04P1megNRslQxS1DFQz2xKbTJIMCAwEAATANBgkqhkiG9w0BAQUFAAOBgQBlF2r38+uyIk9sxdDRr0TF4pMFl2rzSsMPIR0dz+WkPJ9hScp38tmwoqSXl5MyJv5g4U/8PnTxh35c1qkAlLISWayGUEqJerMVrrSErQYeWfhYnj/u7+zmQwA+II0P6fP4t9QUwfrm0JM8f2W4J35Z7AVuurMT9bEo8NSrs8fhBQ==",
+		string publicKey::"BwIAAACkAABSU0EyAAQAAAEAAQCDJNOmxPYMFUMtxVDJRg3omfWD0xgg9KdFqfkjLwIMG1O8lcZ3+rFGTq7AacfyKlJZkm0kpfSPv7M6ccU8BKQghZaQW+0TnJPIFU4NgGa/HfHD+ayAh4Oc69jzc3YSySyrqQXQLLJVsd6axMMxeoaqK94wmwM5TMRhLoXc03n+sekcHnm0WxWhsJcAQAFgpnoLGswzN6zDyTRypmfLhQcH4cjJCX3asDqGN64HBWvHPUlVQ8KUv1/Il7mJgVlowe2Lov426I4cM7FLcbqXDifM8AnQKaCR2+YneQPPRcTh5yz1Vv/u0Im2L5KCSvruhPlP+DLYZsrpPoOxYhBTFae/2RgeuTkIR3Qzhy2O78UD1QH3+n4dB1Yq5slLJkhJp5OEDJtVIqGnH2ted1FOIM+YhUOAECPTOgkeBKcXQaHRhWF2XzXnh1f5watkNCdyGAJ4AWKcnMX51k+LwQPRwuwQ2AAdgUIOnRpQdX9fQI0NhRbsBDOgrV+D/JLPvDNH+jZmCJ7heswM9p8IUyr0ganO9s6a1pYYeDxykPivhIAs5RhIBQV6RQVra7Py6QX2lp9E3Y+PzjTDaVZdiKO7drplYaJXbFxhX5GzVqEdJTDr0OIqaXjPN6soKNB47jI/3FnhFSOHpLBxykhnpfpRWXw1KKYgKtZdaqH/CRfBUSem1hxCFhxS2pBNT3pLFTT5ydLfYaNo2AVXwh8WksgK5VJ0rDlQ1/MVtJvwAO8dy0m2+yVUL5gYBtGGVSYsEM1rT2Q="
+}
+
+string[] prop;
+
+void global::main()
+{
+	prop = Win32::IO::File("config.ini")::ReadLines(0, Win32::IO::File("config.ini")::Lines::CountLines - 1);
+	string gKey = GenerateCode(Encrypt(GenerateBytes()));
+	Win32::Clipboard::SetData(gKey);
+	Win32::Dialogs::Msgbox("Generated Code: " & gKey & "\n\nYou just have to copy & paste it in the activation form of Dataedo " & prop[0x02] & ".X.X to activate the program\n\n(The key has been set in clipboard)\n\nNote: miyacock yacockta sucks absolute balls" , "Dataedo Keygen - Key Successfully Generated", 0x0a, 0x01);
+};
+
+function Encrypt(byte[] data) equ byte[]
+{
+	Crypto::RSA::Engine rsaEngine = new Crypto::RSA::Engine(Mode.Encryption, reso::publicKey);
+	byte[] enc = new byte[];
+	%for (x=0; x++; data::Size)
+	{
+		byte[$0x00+x] = rsaEngine::RunBlock(data, x, Math::ToLowNearest(rsaEngine::InputBlockSize, data::Size - x * rsaEngine::InputBlockSize));
+	};
+	push byte;
+	ret;
+};
+
+function GenerateCode(byte[]) equ string
+{
+	string code;
+ 	%foreach (new byte b => bytes)
+ 	{
+ 		byte var = (b && 15) + 65;
+ 		byte var_ = (b && 240) / 16 + 65;
+ 		code += var & var_;
+ 	};
+ 	push code;
+ 	ret;
+};
+
+function GenerateBytes() equ byte[]
+{
+	byte[] bytes = string::GetBytes(prop[0x00]); ;; Licensee
+	byte[] arr_ = new byte[0x74];
+	date date_ = (date)prop[0x03];
+	Random rng = new Random;
+	arr_[$0x00] = (byte)getLicenseCode(prop[0x01]);
+	arr_[$0x01] = (byte)(int)prop[0x02]; ;; App version, get from MajorVersion number from target app
+	arr_[$0x02=>0x03] = rng::RandomNumber(int32);
+	arr_[$0x04] = (byte)((string)date_::Year).GetCharRange(0,2);
+	arr_[$0x05] = (byte)((string)date_::Year).GetCharRange(2,4);
+	arr_[$0x06] = (byte)date_::Month;
+	arr_[$0x07] = (byte)date_::Day;
+	%for (x = 0; x++; 3) ;; theres no int24
+	{
+		arr_[$0x07+x] = rng::RandomNumber(int16);
+	};
+	arr_[$0x0B=>0x0E] = rng::RandomNumber(int64);
+	bytes::AddRange(arr_);
+	push bytes; 
+	ret;
+};
+
+function getLicenseCode(string code) equ string
+{
+	%select (LicenseValue)
+	{
+		case LicenseValue::Contains("Trial") {push "T";};
+		case LicenseValue::Contains("Pro") {%if (LicenseValue::Contains("Plus")) {push "PP";} %else { push "P";};};
+		case LicenseValue::Contains("Enterprise") {push "E";};
+		case LicenseValue::Contains("Education") {push "EDU";};
+		case LicenseValue::Contains("Lite") {push "F";};
+		case else {push null}
+	};
+	ret;
+};
+
+function getLicenseType(string LicenseType) equ int32
+{
+	%select (LicenseType)
+	{
+		case "Lite" {push 1;};
+        case "Pro" {push 2;};
+        case "Trial" {push 3;};
+        case "Trial30" {push 4;};
+        case "Trial90" {push 5;};
+        case "Trial365" {push 6;};
+        case "Demo" {push 7;};
+        case "Pro30" {push 8;};
+        case "Pro90" {push 9;};
+        case "Pro365" {push 10;};
+        case "Education" {push 13;};
+        case "Education365" {push 14;};
+        case "ProPlus" {push 15;};
+        case "ProPlus365" {push 16;};
+        case "Enterprise" {push 17;};
+        case "Enterprise365" {push 18;};
+        case "EnterpriseTrial" {push 19;};
+        case "EnterpriseTrial30" {push 20;};
+        case "EnterpriseTrial90" {push 21;};
+        case "EnterpriseTrial365" {push 22;};
+        case "Viewer365" {push 23;};
+        case "Viewer60" {push 24;};
+        case "Viewer90" {push 25;};
+        case "Viewer120" {push 26;};
+        case "Pro60" {push 27;};
+        case "Pro120" {push 28;};
+        case "ProPlus60" {push 29;};
+        case "ProPlus90" {push 30;};
+        case "ProPlus120" {push 31;};
+        case "Enterprise60" {push 32;};
+        case "Enterprise90" {push 33;};
+        case "Enterprise120" {push 34;};
+        case "Trial7" {push 35;};
+        case "EnterpriseTrial7" {push 36;};
+        case "Pro180" {push 37;};
+        case "ProPlus30" {push 38;};
+        case "ProPlus180" {push 39;};
+        case "Enterprise30" {push 40;};
+        case "Enterprise180" {push 41;};
+  		case else {push -1;};
+	};
+	ret;
+};
