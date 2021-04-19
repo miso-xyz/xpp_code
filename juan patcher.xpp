@@ -2,11 +2,11 @@
 %include ch.ProcPlus;
 %include ch.Interpreter;
 
-;; Troll patcher for Reset VBA Password 5.15.4.26
+;; Patcher for Reset VBA Password 5.15.4.26
 ;; Author: misonothx
 ;; IDE: Vyper IDE 12.0
 
-;; State: Unfinished
+;; State: Scrapped
 
 ;; 1st method was to attempt a middle-man call retriever & tamper with exported data from ewsWrap
 ;; 2nd method was to slightly patch the orifinal application to retrieve all license key calls sent to ewsWrap
@@ -40,22 +40,22 @@ void global::main()
 			%if (Security::Cryptography::HashAlgorithms::SHA256::FromStream(new MemorySteam(Win32::File::GetBytes("ewsWrap.dll"))) = "06f45e149019c5109d265eb5aa5eb15058ae05eff8af161bd1dfdc1586e8835c")
 			{
 				HookTarg::Start("ResetVBAPassword.exe", 0x00);
-			}
+			};
 			%elif
 			{
-				Win32::Dialogs::Msgbox("Invalid hash (ewsWrap.dll), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01)
+				Win32::Dialogs::Msgbox("Invalid hash (ewsWrap.dll), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01);
 				jmp $0xff;
 			};
-		}
+		};
 		%elif
 		{
-			Win32::Dialogs::Msgbox("Invalid hash (ResetVBAPassword.exe), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01)
+			Win32::Dialogs::Msgbox("Invalid hash (ResetVBAPassword.exe), make sure you're using the right version compatible with this patcher", "Juan Patcher", 0x0f, 0x01);
 			jmp $0xff;
 		};
-	}
+	};
 	%elif
 	{
-		Win32::Dialogs::Msgbox("ResetVBAPassword.exe is missing, please reinstall the application & the crack", "Juan Patcher", 0x0f, 0x01)
+		Win32::Dialogs::Msgbox("ResetVBAPassword.exe is missing, please reinstall the application & the crack", "Juan Patcher", 0x0f, 0x01);
 		jmp $0xff;
 	};
 	
@@ -63,8 +63,8 @@ void global::main()
 	AssemblyDLL ewsWrap_ = Assembly.FromMemory(ewsWrap::Memory);
 	%foreach (new stack[ewsWrap_::exportedData] exportedData => HookTarg)
 	{
-		exportedData patchData = ExportPatch(exportedData[$0x00]])
-		%if (exportedData[$0x00] = exportedData[$(+/-)stack::Size]),stack(ewsWrap_::exportedData)::"expDSimRange"
+		exportedData patchData = ExportPatch(exportedData[$0x00]]);
+		%if (exportedData[$0x00] = exportedData[$(+/-)stack::Size]) ;;stack(ewsWrap_::exportedData)::"expDSimRange")
 		{
 			%for (x=0, x++[0x01], expDSimRange::Size)
 			{
@@ -80,13 +80,14 @@ function StringCalls(string data) equ string
 {
 	%if (data(0=>19) = "__XPP[JUANPATCHER::]")
 	{
-		%select (data(19=>data::Size-1))sam
+		%select (data(19=>data::Size-1))
 		{
-			case "string(%sn)" { Win32::IO::File::ReadLine("text.msg", 0); };
-			case "string(%ver)" { Win32::IO::File::ReadLine("text.msg", 1); };
-			case "string(%homepage)" { Win32::IO::File::ReadLine("text.msg", 2); };
+			case "string(%sn)" { push Win32::IO::File::ReadLine("text.msg", 0); };
+			case "string(%ver)" { push Win32::IO::File::ReadLine("text.msg", 1); };
+			case "string(%homepage)" { push Win32::IO::File::ReadLine("text.msg", 2); };
 		};
 	};
+	ret;
 };
 
 function ExportPatch(exportedData exportedDataToPatch) equ exportedData
@@ -100,4 +101,4 @@ function ExportPatch(exportedData exportedDataToPatch) equ exportedData
 			ret;
 		};
 	};
-}
+};
