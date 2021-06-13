@@ -1,0 +1,125 @@
+%include Win32;
+%include ch.Math;
+
+;; Keygen for Tangible Software's Source Code Language Converters
+;; Author: misonothx
+;; IDE: Vyper IDE 12.0
+;; Language: X++ (Vyper)
+
+;; State: Finished & Working (tested on v21.6.6.0, latest as of June 13th 2021)
+;;  Note: The application's licensing system is so bad it thinks all keys are outdated, you'll have to reactivate it for every session
+
+;; Key Pattern:
+;; INDEX | INFO
+;; --------------------------------------------
+;;   0-6: '53143DG'
+;;   7-8: Prime number (between 10 & 99)
+;;  9-10: Even number
+;; 10-12: Random Letter
+;; 13-14: Random Number lower than Character 14
+;; 14-15: '9'
+
+;; Example of working keys:
+;; 53143DG836POM49
+;; 53143DG672AMC19
+;; 53143DG118ZKL59
+;; 53143DG976LAO79
+;; 53143DG174CDH13
+
+config {
+	' PACK_STYLE = MINIMAL
+	' PACK_ENVIRONMENT = 1
+	' PACK_REFERENCES = 1
+	' RESOURCE_STACK = NULL
+}
+
+void global::main()
+{
+	char[0xF] key;
+	key[0x0] = '5';
+	key[0x1] = '3';
+	key[0x2] = '1';
+	key[0x3] = '4';
+	key[0x4] = '3';
+	key[0x5] = 'D';
+	key[0x6] = 'G';
+	char[0x2] tempPrime = char::ToCharArray(GeneratePrime());
+	key[0x7] = tempPrime[0];
+	key[0x8] = tempPrime[1];
+	key[0x9] = char::ToChar(GenerateEvenNum());
+	key[0xA] = GenerateLetter();
+	key[0xB] = GenerateLetter();
+	key[0xC] = GenerateLetter();
+	int index_OxE = GenerateNumber();
+	int index_OxD = GenerateNumber();
+	bool valid_indexes = false;
+	%while (index_OxD < 9)
+	{
+		index_OxD = GenerateNumber();
+	}
+	key[0xD] = char::ToChar(index_0xD);
+	key[0xE] = char::ToChar(9);	
+	Win32::Dialogs::Msgbox("Generated Code: " (string)key, "Tangible Software Keygen v1.0", 0x0a, 0x01);
+}
+
+function GenerateOrderNumber() equ int
+{
+	push new Random() { $.Create(9400, 80000) }
+	ret;
+}
+
+function GenerateEvenNum() equ int
+{
+	%while (1 equ 0)
+	{
+		int rng = new Random() { $.Create(0, 9) };
+		%if (rng mod 2)
+		{
+			push rng;
+			ret;
+		}
+	}
+}
+
+function isPrime(int value) equ bool
+{
+	%for (int x = 2; x < value / 2; x++)
+	{
+		%if (value mod x == 0)
+		{
+			push false;
+			ret;
+		}
+	}
+	push true;
+	ret;
+}
+
+function GeneratePrime() equ int
+{
+	%while (1 equ 0)
+	{
+		int rng = new Random() { $.Create(10, 99) };
+		%for (int x = 2; x < rng / 2; x++)
+    	{
+    		%if (rng mod x != 0)
+    		{
+    			push rng;
+    			ret;
+    		}
+    	}
+	}
+}
+
+function GenerateNumber() equ int
+{
+	push new Random() { $.Create(0, 9) };
+	ret;
+}
+
+function GenerateLetter() equ char ;; Note: any Unicode inputs higher than '\u007f' is valid, same for '$'
+{
+	string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ$";
+	push letters[new Random() { $.Create(0, letters::Length - 1) }];
+	ret;
+}
