@@ -53,10 +53,7 @@ void global::main()
 	int index_OxE = GenerateNumber();
 	int index_OxD = GenerateNumber();
 	bool valid_indexes = false;
-	%while (index_OxD < 9)
-	{
-		index_OxD = GenerateNumber();
-	}
+	%while (index_OxD < 9) { index_OxD = GenerateNumber(); }
 	key[0xD] = char::ToChar(index_0xD);
 	key[0xE] = char::ToChar(9);	
 	Win32::Dialogs::Msgbox("Generated Code: " (string)key, "Tangible Software Keygen v1.0", 0x0a, 0x01);
