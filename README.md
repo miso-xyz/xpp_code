@@ -8,13 +8,15 @@ will upload here from time to time
 - Chara (dm me to request a client)
 - Chara.XPPRuntimeHandler
 
+Note: if you don't want to install chara you can try to convert the code to something like C#, idk if i wanna make a code translator for x++ though
+
 # Building
 `> vyper --build %file%`
 
 # Getting X++ Runtime Handler
 if you don't have it for some reason you can just use the following commands
 <pre>
-;; its a low-level package, you'll need to allow UAC & DRM, you can also use the GUI to download the package directly from the page
+;; you'll need to allow UAC & DRM, you can also use the GUI to download the package directly from the page
 
 > chara(instance) uac allow 
 > chara(instance) drm allow pkg-install
