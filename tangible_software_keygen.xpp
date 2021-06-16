@@ -6,7 +6,7 @@
 ;; IDE: Vyper IDE 12.0
 ;; Language: X++ (Vyper)
 
-;; State: Finished & Working (tested on v21.6.6.0, latest as of June 13th 2021)
+;; State: Finished & Working (tested on v21.6.6.0, still works on latest (v21.6.6.15))
 ;;  Note: The application's licensing system is so bad it thinks all keys are outdated, you'll have to reactivate it for every session
 
 ;; Key Pattern:
