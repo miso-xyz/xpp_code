@@ -1,0 +1,16 @@
+public static void xppTest3(Args _args)
+{
+ UserInfo userInfo;
+
+ ttsBegin;
+ select forupdate userInfo
+ where userInfo.id != 'Admin'
+ && userInfo.enable;
+ while (userInfo)
+ {
+ userInfo.enable = NoYes::No;
+ userInfo.update();
+ next userInfo;
+ }
+ ttsCommit;
+}
