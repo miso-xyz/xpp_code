@@ -1,4 +1,0 @@
-static void Job1(Args _args)
-{
-    info('Hello world.');
-}
