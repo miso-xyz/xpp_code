@@ -4,7 +4,7 @@
 %include ch.Interpreter;
 %include ch.dotNet.Interpreter;
 
-;; Dataedo Keygen (3.X.X - 9.X.X), now has been ported to .NET
+;; Dataedo Keygen (3.X.X - 9.X.X), now has been ported to .NET - Last Tested on Dataedo 9.2.0 (still works)
 ;; Author: misonothx
 ;; IDE: Vyper IDE 12.0
 
@@ -15,12 +15,12 @@ config {
 	' PACK_ENVIRONMENT = 1
 	' PACK_REFERENCES = 1
 	' RESOURCE_STACK = reso
-}
+};
 
 stack(reso) {
 		string privateKey::"MIIBuTCCASKgAwIBAgIQfAmeN9ud3aJJDZYsiDoCAzANBgkqhkiG9w0BAQUFADAbMRkwFwYDVQQDExBUZXN0IENlcnRpZmljYXRlMB4XDTE0MDQxNTEwMDYzN1oXDTE1MTIzMTAwMDAwMFowGzEZMBcGA1UEAxMQVGVzdCBDZXJ0aWZpY2F0ZTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAsf5509yFLmHETDkDmzDeK6qGejHDxJresVWyLNAFqassyRJ2c/PY65yDh4Cs+cPxHb9mgA1OFciTnBPtW5CWhSCkBDzFcTqzv4/0pSRtkllSKvLHacCuTkax+nfGlbxTGwwCLyP5qUWn9CAY04P1megNRslQxS1DFQz2xKbTJIMCAwEAATANBgkqhkiG9w0BAQUFAAOBgQBlF2r38+uyIk9sxdDRr0TF4pMFl2rzSsMPIR0dz+WkPJ9hScp38tmwoqSXl5MyJv5g4U/8PnTxh35c1qkAlLISWayGUEqJerMVrrSErQYeWfhYnj/u7+zmQwA+II0P6fP4t9QUwfrm0JM8f2W4J35Z7AVuurMT9bEo8NSrs8fhBQ==",
 		string publicKey::"BwIAAACkAABSU0EyAAQAAAEAAQCDJNOmxPYMFUMtxVDJRg3omfWD0xgg9KdFqfkjLwIMG1O8lcZ3+rFGTq7AacfyKlJZkm0kpfSPv7M6ccU8BKQghZaQW+0TnJPIFU4NgGa/HfHD+ayAh4Oc69jzc3YSySyrqQXQLLJVsd6axMMxeoaqK94wmwM5TMRhLoXc03n+sekcHnm0WxWhsJcAQAFgpnoLGswzN6zDyTRypmfLhQcH4cjJCX3asDqGN64HBWvHPUlVQ8KUv1/Il7mJgVlowe2Lov426I4cM7FLcbqXDifM8AnQKaCR2+YneQPPRcTh5yz1Vv/u0Im2L5KCSvruhPlP+DLYZsrpPoOxYhBTFae/2RgeuTkIR3Qzhy2O78UD1QH3+n4dB1Yq5slLJkhJp5OEDJtVIqGnH2ted1FOIM+YhUOAECPTOgkeBKcXQaHRhWF2XzXnh1f5watkNCdyGAJ4AWKcnMX51k+LwQPRwuwQ2AAdgUIOnRpQdX9fQI0NhRbsBDOgrV+D/JLPvDNH+jZmCJ7heswM9p8IUyr0ganO9s6a1pYYeDxykPivhIAs5RhIBQV6RQVra7Py6QX2lp9E3Y+PzjTDaVZdiKO7drplYaJXbFxhX5GzVqEdJTDr0OIqaXjPN6soKNB47jI/3FnhFSOHpLBxykhnpfpRWXw1KKYgKtZdaqH/CRfBUSem1hxCFhxS2pBNT3pLFTT5ydLfYaNo2AVXwh8WksgK5VJ0rDlQ1/MVtJvwAO8dy0m2+yVUL5gYBtGGVSYsEM1rT2Q="
-}
+};
 
 string[] prop;
 
